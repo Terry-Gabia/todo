@@ -1,4 +1,4 @@
-import { useState, FormEvent, KeyboardEvent } from 'react';
+import { useState, type FormEvent, type KeyboardEvent } from 'react';
 import { CATEGORIES, PRIORITIES, type Category, type Priority } from '../../types';
 
 interface Props {
