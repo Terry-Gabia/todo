@@ -5,13 +5,13 @@ import { useTodos } from './hooks/useTodos';
 import { Auth } from './components/Auth/Auth';
 import { Header } from './components/Layout/Header';
 import { TodoList } from './components/Todo/TodoList';
-import { TelegramSettings } from './components/Telegram/TelegramSettings';
+import { SlackSettings } from './components/Slack/SlackSettings';
 
 function App() {
   const { user, loading: authLoading, signOut } = useAuth();
   const { theme, toggleTheme } = useTheme(user?.id ?? null);
   const { todos, loading: todosLoading, addTodo, toggleTodo, updateTodo, deleteTodo } = useTodos(user?.id ?? null);
-  const [showTelegramSettings, setShowTelegramSettings] = useState(false);
+  const [showSlackSettings, setShowSlackSettings] = useState(false);
 
   if (authLoading) {
     return (
@@ -57,7 +57,7 @@ function App() {
         onToggleTheme={toggleTheme}
         userEmail={user.email ?? null}
         onSignOut={signOut}
-        onOpenTelegramSettings={() => setShowTelegramSettings(true)}
+        onOpenSlackSettings={() => setShowSlackSettings(true)}
       />
       <main className="main">
         <TodoList
@@ -69,10 +69,10 @@ function App() {
           onDelete={deleteTodo}
         />
       </main>
-      {showTelegramSettings && (
-        <TelegramSettings
+      {showSlackSettings && (
+        <SlackSettings
           userId={user.id}
-          onClose={() => setShowTelegramSettings(false)}
+          onClose={() => setShowSlackSettings(false)}
         />
       )}
     </div>
