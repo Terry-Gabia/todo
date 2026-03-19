@@ -16,15 +16,15 @@ CREATE TABLE IF NOT EXISTS public.todos (
 
 -- 2. 유저 프로필 테이블
 CREATE TABLE IF NOT EXISTS public.user_profiles (
-  user_id          uuid PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
-  theme            text DEFAULT 'light' CHECK (theme IN ('light', 'dark')),
-  telegram_chat_id text
+  user_id       uuid PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
+  theme         text DEFAULT 'light' CHECK (theme IN ('light', 'dark')),
+  slack_user_id text
 );
 
 -- 3. 인덱스
 CREATE INDEX IF NOT EXISTS idx_todos_user_id ON public.todos(user_id);
 CREATE INDEX IF NOT EXISTS idx_todos_completed ON public.todos(user_id, completed);
-CREATE INDEX IF NOT EXISTS idx_user_profiles_chat_id ON public.user_profiles(telegram_chat_id);
+CREATE INDEX IF NOT EXISTS idx_user_profiles_slack_user_id ON public.user_profiles(slack_user_id);
 
 -- 4. RLS (Row Level Security) 활성화
 ALTER TABLE public.todos ENABLE ROW LEVEL SECURITY;
@@ -56,5 +56,5 @@ CREATE POLICY "Users can update own profile" ON public.user_profiles
 -- 7. Realtime 활성화
 ALTER PUBLICATION supabase_realtime ADD TABLE public.todos;
 
--- 8. Service Role용 RLS 우회 정책 (텔레그램 봇 서버용)
+-- 8. Service Role용 RLS 우회 정책 (Slack 봇 서버용)
 -- Service Role Key를 사용하면 RLS가 자동 우회됩니다 (별도 정책 불필요)

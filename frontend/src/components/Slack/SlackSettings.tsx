@@ -6,20 +6,20 @@ interface Props {
   onClose: () => void;
 }
 
-export function TelegramSettings({ userId, onClose }: Props) {
-  const [chatId, setChatId] = useState('');
+export function SlackSettings({ userId, onClose }: Props) {
+  const [slackUserId, setSlackUserId] = useState('');
   const [saved, setSaved] = useState(false);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     supabase
       .from('user_profiles')
-      .select('telegram_chat_id')
+      .select('slack_user_id')
       .eq('user_id', userId)
       .single()
       .then(({ data }) => {
-        if (data?.telegram_chat_id) {
-          setChatId(data.telegram_chat_id);
+        if (data?.slack_user_id) {
+          setSlackUserId(data.slack_user_id);
         }
       });
   }, [userId]);
@@ -29,7 +29,7 @@ export function TelegramSettings({ userId, onClose }: Props) {
     const { error } = await supabase
       .from('user_profiles')
       .upsert(
-        { user_id: userId, telegram_chat_id: chatId || null },
+        { user_id: userId, slack_user_id: slackUserId || null },
         { onConflict: 'user_id' }
       );
     setLoading(false);
@@ -43,7 +43,7 @@ export function TelegramSettings({ userId, onClose }: Props) {
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
-          <h2>텔레그램 알림 설정</h2>
+          <h2>Slack 알림 설정</h2>
           <button className="btn btn-icon" onClick={onClose}>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <line x1="18" y1="6" x2="6" y2="18" />
@@ -56,20 +56,20 @@ export function TelegramSettings({ userId, onClose }: Props) {
           <div className="telegram-guide">
             <h3>설정 방법</h3>
             <ol>
-              <li>텔레그램에서 할일 봇을 찾아 대화를 시작합니다.</li>
-              <li><code>/내아이디</code> 또는 <code>/myid</code>를 입력하여 Chat ID를 확인합니다.</li>
-              <li>아래 입력란에 Chat ID를 입력하고 저장합니다.</li>
+              <li>Slack 워크스페이스에서 할일 봇이 추가되어 있는지 확인합니다.</li>
+              <li>Slack 프로필을 클릭 → 점 3개 메뉴(&#8943;) → <strong>"멤버 ID 복사"</strong>를 선택합니다.</li>
+              <li>아래 입력란에 Member ID를 입력하고 저장합니다.</li>
             </ol>
           </div>
 
           <div className="form-group">
-            <label htmlFor="chatId">텔레그램 Chat ID</label>
+            <label htmlFor="slackUserId">Slack Member ID</label>
             <input
-              id="chatId"
+              id="slackUserId"
               type="text"
-              value={chatId}
-              onChange={(e) => setChatId(e.target.value)}
-              placeholder="예: 123456789"
+              value={slackUserId}
+              onChange={(e) => setSlackUserId(e.target.value)}
+              placeholder="예: U01ABCD2EFG"
             />
           </div>
 
