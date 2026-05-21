@@ -248,6 +248,6 @@ user_profiles (
 
 구글 인증 참고사항
 
-clinetid : 159709957350-69c0cnkqo9kto93ntuhag1ccrbe266b4.apps.googleusercontent.com
-clinet secret 159709957350-69c0cnkqo9kto93ntuhag1ccrbe266b4.apps.googleusercontent.com
-https://dvynnouphxkreipjrnws.supabase.co/auth/v1/callback
+clinetid : <YOUR_GOOGLE_CLIENT_ID>
+clinet secret : <YOUR_GOOGLE_CLIENT_SECRET>
+callback url : <YOUR_SUPABASE_URL>/auth/v1/callback
